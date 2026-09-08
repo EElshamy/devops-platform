@@ -1,5 +1,7 @@
 FROM node:22-alpine AS build
 
+RUN apk update && apk upgrade
+
 WORKDIR /app
 
 COPY package*.json ./
@@ -13,7 +15,10 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:alpine
+
+FROM nginx:1.31.5-alpine3.24
+
+RUN apk update && apk upgrade
 
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
