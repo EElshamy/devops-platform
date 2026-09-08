@@ -63,7 +63,7 @@ function Home() {
           <h1>
             Master DevOps.
             <br />
-            <span>Build. Automate. Deploy.</span>
+            <span>Build. Automate. Deploy. 🚀</span>
           </h1>
 
           <p className="hero-description">
