@@ -30,3 +30,13 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t devops-platform:ci .
+
+      - name: Security scan with Trivy
+        uses: aquasecurity/trivy-action@57a97c7
+        with:
+          scan-type: image
+          image-ref: devops-platform:ci
+          format: table
+          severity: CRITICAL,HIGH
+          exit-code: 1
+          ignore-unfixed: true
