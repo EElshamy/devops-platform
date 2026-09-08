@@ -42,6 +42,24 @@ The application is developed locally, containerized with Docker, security-scanne
 
 ---
 
+## 🔐 Security Notice
+
+> The commands in this README are intended to be executed using
+> the operator's own AWS and Kubernetes credentials.
+>
+> No AWS access keys, secrets, tokens, passwords, or private keys are
+> stored in this repository.
+>
+> Never commit:
+>
+> - AWS Access Keys
+> - AWS Secret Access Keys
+> - GitHub Tokens
+> - Kubernetes kubeconfig files
+> - SSH Private Keys
+> - `.env` files containing secrets
+> - Terraform state files containing sensitive data
+
 # 🏗️ Architecture
 
 ## Production Architecture
