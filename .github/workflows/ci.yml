@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on:
   push:
@@ -40,3 +40,23 @@ jobs:
           severity: CRITICAL,HIGH
           exit-code: 1
           ignore-unfixed: true
+
+      - name: Configure AWS credentials
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to S3
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          aws s3 sync dist/ s3://${{ secrets.S3_BUCKET }}/ --delete
+
+      - name: Invalidate CloudFront
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
