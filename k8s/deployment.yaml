@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-platform
+  namespace: devops-platform
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: devops-platform
+
+  template:
+    metadata:
+      labels:
+        app: devops-platform
+
+    spec:
+      imagePullSecrets:
+        - name: ecr-registry
+
+      containers:
+        - name: devops-platform
+          image: 528087308835.dkr.ecr.eu-central-1.amazonaws.com/devops-platform:1.0.1
+
+          ports:
+            - containerPort: 80
+              protocol: TCP
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "128Mi"
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 20
